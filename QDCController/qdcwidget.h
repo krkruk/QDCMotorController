@@ -18,6 +18,7 @@ public:
     ~QDCWidget();
     int getPwmValue();
     void setGroupLabel(const QString &label);
+    void setDefaultView();
 
 signals:
     void emergencyClicked();
@@ -27,6 +28,7 @@ public slots:
     void setLeftLimitSwitchState(bool state);
     void setRightLimitSwitchState(bool state);
     void setPwmValue(int newValue);
+    void emergencyHalt();
 
 private slots:
     void on_horizontalSliderPWMRegulator_valueChanged(int value);

@@ -58,6 +58,7 @@ private:
     QDCModel *model2;
     QDCModel *model3;
 
+    QList<QDCWidget *> motors;
     QList<QDCModel *> models;
 
     const int TIMER_INTERVAL {100};

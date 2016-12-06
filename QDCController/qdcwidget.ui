@@ -78,6 +78,9 @@
               <height>50</height>
              </size>
             </property>
+            <property name="text">
+             <string>0%</string>
+            </property>
            </widget>
           </item>
          </layout>

@@ -17,6 +17,7 @@ public:
     QDCModel(const QString &leftLimitSwitchJson,
              const QString &rightLimitSwitchJson,
              const QString &pwmJson,
+             const QString &haltJson,
              QDCWidget *dcController,
              QObject *parent=nullptr);
     ~QDCModel();
@@ -32,12 +33,20 @@ public:
 
 private:
     void apply_parsed_data(bool leftSwitch, bool rightSwitch, int pwm);
+    void apply_halt();
+
 
     const QString leftLimitSwitchKey;
     const QString rightLimitSwitchKey;
     const QString pwmJsonKey;
+    const QString haltJsonKey;
     QDCWidget *dcController;
 
+    enum class HALT {
+        NO_HALT = 0,
+        CLOCKWISE = 1,
+        COUNTERCLOCKWISE = -1
+    };
 };
 
 #endif // QDCMODEL_H

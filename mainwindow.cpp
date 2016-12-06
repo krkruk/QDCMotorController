@@ -15,12 +15,16 @@ MainWindow::MainWindow(QWidget *parent) :
     motor2 = new QDCWidget(this);
     motor3 = new QDCWidget(this);
 
-    model1 = new QDCModel("mot1ls", "mot1rs", "mot1", motor1, this);
-    model2 = new QDCModel("mot2ls", "mot2rs", "mot2", motor2, this);
-    model3 = new QDCModel("mot3ls", "mot3rs", "mot3", motor3, this);
+    model1 = new QDCModel("m1ls", "m1rs", "mot1", "h1", motor1, this);
+    model2 = new QDCModel("m2ls", "m2rs", "mot2", "h2", motor2, this);
+    model3 = new QDCModel("m3ls", "m3rs", "mot3", "h3", motor3, this);
 
     timer = new QTimer(this);
     timer->setInterval(TIMER_INTERVAL);
+
+    motors.append(motor1);
+    motors.append(motor2);
+    motors.append(motor3);
 
     models.append(model1);
     models.append(model2);
@@ -131,6 +135,9 @@ void MainWindow::set_connection_state(bool state)
     {
         ui->pushButtonConnect->setText("Co&nnect");
         ui->pushButtonReload->setEnabled(true);
+        for( auto dcWidget : motors )
+            dcWidget->setDefaultView();
+
         timer->stop();
     }
 }

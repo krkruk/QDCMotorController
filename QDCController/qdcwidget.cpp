@@ -24,6 +24,13 @@ void QDCWidget::setGroupLabel(const QString &label)
     ui->groupBoxMotorController->setTitle(label);
 }
 
+void QDCWidget::setDefaultView()
+{
+    setLeftLimitSwitchState(false);
+    setRightLimitSwitchState(false);
+    emergencyHalt();
+}
+
 void QDCWidget::setLeftLimitSwitchState(bool state)
 {
     auto &style = state ? markStyle : defaultStyle;
@@ -47,6 +54,13 @@ void QDCWidget::setPwmValue(int newValue)
     ui->lineEditPWMValue->setText(QString("%1%").arg(fvalue));
 }
 
+void QDCWidget::emergencyHalt()
+{
+    constexpr int STOP_VALUE = 0;
+    setPwmValue(STOP_VALUE);
+    ui->horizontalSliderPWMRegulator->setValue(STOP_VALUE);
+}
+
 void QDCWidget::on_horizontalSliderPWMRegulator_valueChanged(int value)
 {
     setPwmValue(value);
@@ -55,9 +69,7 @@ void QDCWidget::on_horizontalSliderPWMRegulator_valueChanged(int value)
 
 void QDCWidget::on_pushButtonEmergencyStop_clicked()
 {
-    constexpr int STOP_VALUE = 0;
-    setPwmValue(STOP_VALUE);
-    ui->horizontalSliderPWMRegulator->setValue(STOP_VALUE);
+    emergencyHalt();
 
     emit emergencyClicked();
 }
