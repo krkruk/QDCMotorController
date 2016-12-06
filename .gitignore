@@ -1,1 +1,8 @@
 *.pro.user
+
+#in arduino files
+Arduino_PololuDCDriver/.settings
+Arduino_PololuDCDriver/.cproject
+Arduino_PololuDCDriver/.ino.cpp
+Arduino_PololuDCDriver.project
+Arduino_PololuDCDriver/Release/
