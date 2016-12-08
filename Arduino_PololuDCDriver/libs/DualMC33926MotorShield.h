@@ -26,6 +26,9 @@ class DualMC33926MotorShield
     unsigned char getFaultDriver1(); // Get fault reading of driver1
     unsigned char getFaultDriver2(); // Get fault reading of driver1
     
+    void resetDriver1();
+    void resetDriver2();
+
   private:
     uint8_t _D1nD2;
     uint8_t _M1DIR;

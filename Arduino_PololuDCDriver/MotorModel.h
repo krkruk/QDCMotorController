@@ -13,6 +13,7 @@ class MotorModel {
 public:
 	static const int8_t COUNTERCLOCKWISE = -1;
 	static const int8_t CLOCKWISE = 1;
+	static const int8_t WTF = 2; 	//What a Terrible Fault
 
 	MotorModel(MotorData *motor);
 	void computePwm();

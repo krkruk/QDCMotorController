@@ -15,9 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
     motor2 = new QDCWidget(this);
     motor3 = new QDCWidget(this);
 
-    model1 = new QDCModel("m1ls", "m1rs", "mot1", "h1", motor1, this);
-    model2 = new QDCModel("m2ls", "m2rs", "mot2", "h2", motor2, this);
-    model3 = new QDCModel("m3ls", "m3rs", "mot3", "h3", motor3, this);
+    model1 = new QDCModel("mot1", "h1", "cu1", motor1, this);
+    model2 = new QDCModel("mot2", "h2", "cu2", motor2, this);
+    model3 = new QDCModel("mot3", "h3", "cu3", motor3, this);
 
     timer = new QTimer(this);
     timer->setInterval(TIMER_INTERVAL);
@@ -34,7 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->verticalLayout->addWidget(motor2);
     ui->verticalLayout->addWidget(motor3);
 
-    motor1->setGroupLabel("Motor1");
+    motor1->setGroupLabel("Motor 1");
+    motor2->setGroupLabel("Motor 2");
+    motor3->setGroupLabel("Motor 3");
 
     scan_for_serial_devices();
     plumbing();
@@ -61,6 +63,13 @@ void MainWindow::onLineRead(QByteArray data)
 {
     for(auto model : models)
         model->updateData(data);
+
+    const auto jsonDoc = QJsonDocument::fromJson(data);
+    const auto jsonObj = jsonDoc.object();
+    const auto driver1Error = jsonObj.value("err1").toInt();
+    const auto driver2Error = jsonObj.value("err2").toInt();
+    if(driver1Error) informStatusBar("Driver 1 experienced an error");
+    if(driver2Error) informStatusBar("Driver 2 experienced an error");
 }
 
 void MainWindow::onConnectionClosedSerialError(QSerialPort::SerialPortError e, const QString &stringError)
@@ -81,6 +90,12 @@ void MainWindow::update_motor_driver()
     const auto dataCmd = cmd.toLatin1();
 
     serial->write(dataCmd + "\n");
+}
+
+void MainWindow::informStatusBar(const QString &msg)
+{
+    constexpr int TIMEOUT = 3000;
+    ui->statusBar->showMessage(msg, TIMEOUT);
 }
 
 void MainWindow::on_action_Exit_triggered()

@@ -176,3 +176,17 @@ unsigned char DualMC33926MotorShield::getFaultDriver2()
 {
   return !digitalRead(_D2nSF);
 }
+
+void DualMC33926MotorShield::resetDriver1()
+{
+	digitalWrite(_D1nD2, LOW);
+	delay(1);
+	digitalWrite(_D1nD2, HIGH);
+}
+
+void DualMC33926MotorShield::resetDriver2()
+{
+	digitalWrite(_D2nD2, LOW);
+	delay(1);
+	digitalWrite(_D2nD2, HIGH);
+}

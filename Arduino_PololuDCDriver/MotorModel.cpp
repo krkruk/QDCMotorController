@@ -20,9 +20,6 @@ void MotorModel::computePwm()
 
 	switch(_direction)
 	{
-	case 0:
-		pwm = 0;
-		break;
 	case CLOCKWISE:
 		if(_motor->getClockwisePinState()){
 			_isHalted = CLOCKWISE;
@@ -35,10 +32,20 @@ void MotorModel::computePwm()
 			pwm = 0;
 		}
 		break;
+	case 0:
 	default:
+		if(_motor->getClockwisePinState()) _isHalted = CLOCKWISE;
+		if(_motor->getCounterClockwisePinState()) _isHalted = COUNTERCLOCKWISE;
 		pwm = 0;
 		break;
 	}
+
+	if(_motor->getClockwisePinState()
+			&& _motor->getCounterClockwisePinState()) {
+		_isHalted = WTF;
+		pwm = 0;
+	}
+
 	_motor->setPwm(pwm);
 }
 

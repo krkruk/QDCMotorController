@@ -47,12 +47,18 @@ void loop() {
 	if(Serial.available() > 0)
 		read_json();
 
+	if(driver.getFaultDriver1()) driver.resetDriver1();
+	if(driver.getFaultDriver2()) driver.resetDriver2();
+
+
 	motor1.readLimitSwitchesState();
 	motor2.readLimitSwitchesState();
 	motor3.readLimitSwitchesState();
+
 	model1.computePwm();
 	model2.computePwm();
 	model3.computePwm();
+
 
 	driver.setM1Speed(motor1.getPwm());
 	driver.setM2Speed(motor2.getPwm());
@@ -82,21 +88,17 @@ void write_to_device()
 	DynamicJsonBuffer jsonBuffer;
 	JsonObject &root = jsonBuffer.createObject();
 	root["mot1"] = motor1.getPwm();
-	root["m1ls"] = motor1.getCounterClockwisePinState();
-	root["m1rs"] = motor1.getClockwisePinState();
 	root["cu1"] = driver.getM1CurrentMilliamps();
 	if(model1.isHalted() != 0)
 		root["h1"] = model1.isHalted();
 
 	root["mot2"] = motor2.getPwm();
-	root["m2ls"] = motor2.getCounterClockwisePinState();
-	root["m2rs"] = motor2.getClockwisePinState();
+	root["cu2"] = driver.getM2CurrentMilliamps();
 	if(model2.isHalted() != 0)
-		root["halt2"] = model2.isHalted();
+		root["h2"] = model2.isHalted();
 
 	root["mot3"] = motor3.getPwm();
-	root["m3ls"] = motor3.getCounterClockwisePinState();
-	root["m3rs"] = motor3.getClockwisePinState();
+	root["cu3"] = driver.getM3CurrentMilliamps();
 	if(model3.isHalted() != 0)
 		root["h3"] = model3.isHalted();
 

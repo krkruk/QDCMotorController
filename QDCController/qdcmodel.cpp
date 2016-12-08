@@ -1,17 +1,15 @@
 #include "qdcmodel.h"
 #include <QDebug>
 
-QDCModel::QDCModel(const QString &leftLimitSwitchJson,
-                   const QString &rightLimitSwitchJson,
-                   const QString &pwmJson,
+QDCModel::QDCModel(const QString &pwmJson,
                    const QString &haltJson,
+                   const QString &currentJson,
                    QDCWidget *dcController,
                    QObject *parent)
     : QObject(parent),
-      leftLimitSwitchKey(leftLimitSwitchJson),
-      rightLimitSwitchKey(rightLimitSwitchJson),
       pwmJsonKey(pwmJson),
       haltJsonKey(haltJson),
+      currentJsonKey(currentJson),
       dcController(dcController)
 {
 
@@ -25,14 +23,32 @@ void QDCModel::updateData(QByteArray data)
 {
     const auto jsonDoc = QJsonDocument::fromJson(data);
     const auto jsonObj = jsonDoc.object();
-    const bool leftLimitSwitchState = (bool)jsonObj.value(leftLimitSwitchKey).toInt();
-    const bool rightLimitSwitchState = (bool)jsonObj.value(rightLimitSwitchKey).toInt();
     const int pwmValue = jsonObj.value(pwmJsonKey).toInt();
     const int haltState = jsonObj.value(haltJsonKey).toInt();
+    const int mampsCurrent = jsonObj.value(currentJsonKey).toInt();
+
+    bool leftLimitSwitchState = false;
+    bool rightLimitSwitchState = false;
+    switch(haltState)
+    {
+    case static_cast<int>(HALT::CLOCKWISE):
+        rightLimitSwitchState = true;
+        break;
+    case static_cast<int>(HALT::COUNTERCLOCKWISE):
+        leftLimitSwitchState = true;
+        break;
+    case static_cast<int>(HALT::WTF):
+        leftLimitSwitchState = true;
+        rightLimitSwitchState = true;
+        break;
+    default:
+        break;
+    }
 
     qDebug() << jsonDoc;
 
     apply_parsed_data(leftLimitSwitchState, rightLimitSwitchState, pwmValue);
+    dcController->setCurrent(mampsCurrent);
 
     if(haltState != static_cast<int>(HALT::NO_HALT))
         apply_halt();
@@ -50,17 +66,12 @@ void QDCModel::apply_halt()
     dcController->emergencyHalt();
 }
 
+QString QDCModel::getHaltJsonKey() const
+{
+    return haltJsonKey;
+}
+
 QString QDCModel::getPwmJsonKey() const
 {
     return pwmJsonKey;
-}
-
-QString QDCModel::getRightLimitSwitchKey() const
-{
-    return rightLimitSwitchKey;
-}
-
-QString QDCModel::getLeftLimitSwitchKey() const
-{
-    return leftLimitSwitchKey;
 }

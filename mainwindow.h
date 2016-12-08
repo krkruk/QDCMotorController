@@ -32,6 +32,7 @@ private slots:
     void onLineRead(QByteArray data);
     void onConnectionClosedSerialError(QSerialPort::SerialPortError e, const QString &stringError);
     void update_motor_driver();
+    void informStatusBar(const QString &msg);
 
     void on_action_Exit_triggered();
 

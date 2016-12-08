@@ -51,13 +51,19 @@ void QDCWidget::setPwmValue(int newValue)
 {
     float fvalue = 100.0f * newValue / maxSliderValue;
 
-    ui->lineEditPWMValue->setText(QString("%1%").arg(fvalue));
+    ui->labelPwm->setText(QString("PWM: %1%").arg(fvalue));
+}
+
+void QDCWidget::setCurrent(int mAmps)
+{
+    ui->labelCurrent->setText(QString("Current: %1mA").arg(mAmps));
 }
 
 void QDCWidget::emergencyHalt()
 {
     constexpr int STOP_VALUE = 0;
     setPwmValue(STOP_VALUE);
+    setCurrent(0);
     ui->horizontalSliderPWMRegulator->setValue(STOP_VALUE);
 }
 

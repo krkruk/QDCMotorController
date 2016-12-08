@@ -28,6 +28,7 @@ public slots:
     void setLeftLimitSwitchState(bool state);
     void setRightLimitSwitchState(bool state);
     void setPwmValue(int newValue);
+    void setCurrent(int mAmps);
     void emergencyHalt();
 
 private slots:
