@@ -24,9 +24,12 @@ MotorModel model3(&motor3);
 
 constexpr int BUFFER_SIZE = 100;
 
+constexpr int WRITE_TIMEOUT = 50;
+unsigned long writeTimer = 0;
+
 void read_json();
 void write_to_device();
-
+int8_t canWriteToDevice();
 
 void setup() {
 	Serial.begin(115200);
@@ -39,6 +42,7 @@ void setup() {
 	pinMode(13, OUTPUT);
 
 	while(!Serial);
+	writeTimer = millis();
 }
 
 // MAIN LOOP START =======================
@@ -64,8 +68,8 @@ void loop() {
 	driver.setM2Speed(motor2.getPwm());
 	driver.setM3Speed(motor3.getPwm());
 
-	write_to_device();
-	delay(50);
+	if(canWriteToDevice())
+		write_to_device();
 }
 // MAIN LOOP STOP  =======================
 
@@ -106,4 +110,14 @@ void write_to_device()
 	root["err2"] = driver.getFaultDriver2();
 	root.printTo(Serial);
 	Serial.print("\r\n");
+}
+
+int8_t canWriteToDevice()
+{
+	if(WRITE_TIMEOUT <= millis() - writeTimer)
+	{
+		writeTimer = millis();
+		return 1;
+	}
+	return 0;
 }

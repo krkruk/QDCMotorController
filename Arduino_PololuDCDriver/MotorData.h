@@ -20,9 +20,12 @@ public:
 	uint8_t getCounterClockwisePinState() const { return _ccwiseState; }
 	uint8_t getClockwisePinState() const { return _cwiseState; }
 
-	int getPwm() const { return _pwm; }
+	int getPwm();
 
-	void setPwm(int pwm) { _pwm = pwm; }
+	void setPwm(int pwm) {
+		_previousPwm = _pwm;
+		_pwm = pwm;
+	}
 
 private:
 	const uint8_t _ccwisePin;
@@ -32,6 +35,7 @@ private:
 	uint8_t _cwiseState {0};
 
 	int _pwm {0};
+	int _previousPwm {0};
 };
 
 #endif /* MOTORDATA_H_ */

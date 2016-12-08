@@ -40,6 +40,10 @@ private slots:
 
     void on_pushButtonReload_clicked();
 
+    void on_actionAbout_author_triggered();
+
+    void on_actionAbout_Qt_triggered();
+
 private:
     void plumbing();
     void set_connection_state(bool state);

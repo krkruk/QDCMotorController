@@ -23,3 +23,13 @@ void MotorData::readLimitSwitchesState() {
 	_ccwiseState = digitalRead(_ccwisePin);
 	_cwiseState = digitalRead(_cwisePin);
 }
+
+int MotorData::getPwm()
+{
+//	if(_previousPwm >= _pwm)
+//		return _pwm;
+//
+//	return ++_previousPwm <= _pwm ?
+//			_previousPwm : _pwm;
+	return _pwm;
+}

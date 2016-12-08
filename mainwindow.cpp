@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -34,9 +35,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->verticalLayout->addWidget(motor2);
     ui->verticalLayout->addWidget(motor3);
 
-    motor1->setGroupLabel("Motor 1");
-    motor2->setGroupLabel("Motor 2");
-    motor3->setGroupLabel("Motor 3");
+    motor1->setGroupLabel(tr("Motor 1"));
+    motor2->setGroupLabel(tr("Motor 2"));
+    motor3->setGroupLabel(tr("Motor 3"));
 
     scan_for_serial_devices();
     plumbing();
@@ -68,8 +69,8 @@ void MainWindow::onLineRead(QByteArray data)
     const auto jsonObj = jsonDoc.object();
     const auto driver1Error = jsonObj.value("err1").toInt();
     const auto driver2Error = jsonObj.value("err2").toInt();
-    if(driver1Error) informStatusBar("Driver 1 experienced an error");
-    if(driver2Error) informStatusBar("Driver 2 experienced an error");
+    if(driver1Error) informStatusBar(tr("Driver 1 experienced an error"));
+    if(driver2Error) informStatusBar(tr("Driver 2 experienced an error"));
 }
 
 void MainWindow::onConnectionClosedSerialError(QSerialPort::SerialPortError e, const QString &stringError)
@@ -140,18 +141,20 @@ void MainWindow::set_connection_state(bool state)
 {
     isConnected = state;
 
+    for( auto dcWidget : motors )
+        dcWidget->setDefaultView();
+
     if(state)
     {
-        ui->pushButtonConnect->setText("Disco&nnect");
+        ui->pushButtonConnect->setText(tr("Disco&nnect"));
         ui->pushButtonReload->setEnabled(false);
+
         QTimer::singleShot(2000, this, [&](){timer->start();});
     }
     else
     {
-        ui->pushButtonConnect->setText("Co&nnect");
+        ui->pushButtonConnect->setText(tr("Co&nnect"));
         ui->pushButtonReload->setEnabled(true);
-        for( auto dcWidget : motors )
-            dcWidget->setDefaultView();
 
         timer->stop();
     }
@@ -162,4 +165,18 @@ void MainWindow::scan_for_serial_devices()
     serialSelect->clear();
     for(auto port : QSerialPortInfo::availablePorts())
         serialSelect->addItem(port.portName());
+}
+
+void MainWindow::on_actionAbout_author_triggered()
+{
+    QString msg = "<p><h3>QDCMotorController</h3></p>"
+                  "<p>Control DC motors via serial port.</p>"
+                  "<p>&copy; <a href=\"mailto:krzysztof.pawel.kruk@gmail.com\">"
+                  "Krzysztof Kruk</a> 2016</p>";
+    QMessageBox::about(this, tr("About"), msg);
+}
+
+void MainWindow::on_actionAbout_Qt_triggered()
+{
+    QMessageBox::aboutQt(this, tr("About Qt"));
 }
