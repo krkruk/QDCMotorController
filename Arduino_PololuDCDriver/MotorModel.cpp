@@ -12,7 +12,7 @@ MotorModel::MotorModel(MotorData* motor)
 {
 }
 
-int MotorModel::getPwm()
+void MotorModel::computePwm()
 {
 	int pwm = _motor->getPwm();
 	_direction = getDirection(pwm);
@@ -40,7 +40,6 @@ int MotorModel::getPwm()
 		break;
 	}
 	_motor->setPwm(pwm);
-	return pwm;
 }
 
 int8_t MotorModel::getDirection(const int& pwm)

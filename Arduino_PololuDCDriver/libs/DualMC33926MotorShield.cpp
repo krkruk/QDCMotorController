@@ -66,7 +66,7 @@ void DualMC33926MotorShield::init()
 
 
 	TCCR4A = 1<<COM4A1 | 1<<COM4B1 | 1<<COM4C1	//enable pin
-		  |  1<<WGM40;	//phase an freq pwm(9)
+			| 1<<WGM40;	//phase an freq pwm(9), 20kHz PWM
 	TCCR4B = 1<<WGM43;
 	ICR4 = 400;
 	OCR4A = 0;

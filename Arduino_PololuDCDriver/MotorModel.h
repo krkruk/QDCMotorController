@@ -15,7 +15,7 @@ public:
 	static const int8_t CLOCKWISE = 1;
 
 	MotorModel(MotorData *motor);
-	int getPwm();
+	void computePwm();
 	int8_t isHalted() const { return _isHalted; }
 
 private:

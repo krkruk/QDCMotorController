@@ -50,10 +50,13 @@ void loop() {
 	motor1.readLimitSwitchesState();
 	motor2.readLimitSwitchesState();
 	motor3.readLimitSwitchesState();
+	model1.computePwm();
+	model2.computePwm();
+	model3.computePwm();
 
-	driver.setM1Speed(model1.getPwm());
-	driver.setM2Speed(model2.getPwm());
-	driver.setM3Speed(model3.getPwm());
+	driver.setM1Speed(motor1.getPwm());
+	driver.setM2Speed(motor2.getPwm());
+	driver.setM3Speed(motor3.getPwm());
 
 	write_to_device();
 	delay(50);

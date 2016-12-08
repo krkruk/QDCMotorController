@@ -21,6 +21,7 @@ public:
 	uint8_t getClockwisePinState() const { return _cwiseState; }
 
 	int getPwm() const { return _pwm; }
+
 	void setPwm(int pwm) { _pwm = pwm; }
 
 private:
