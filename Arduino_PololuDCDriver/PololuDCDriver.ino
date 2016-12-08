@@ -5,7 +5,13 @@
 #include "MotorModel.h"
 
 
-DualMC33926MotorShield driver1(26, 2, A0, 28, 3, A1, 30, 31);
+DualMC33926MotorShield driver(
+		26, A0,
+		28, A1,
+		24, A2,
+
+		30, 31,
+		32, 33);
 MotorData motor1(44, 42);
 MotorModel model1(&motor1);
 
@@ -24,7 +30,7 @@ void write_to_device();
 
 void setup() {
 	Serial.begin(115200);
-	driver1.init();
+	driver.init();
 
 	motor1.init();
 	motor2.init();
@@ -45,7 +51,9 @@ void loop() {
 	motor2.readLimitSwitchesState();
 	motor3.readLimitSwitchesState();
 
-	driver1.setM1Speed(model1.getPwm());
+	driver.setM1Speed(model1.getPwm());
+	driver.setM2Speed(model2.getPwm());
+	driver.setM3Speed(model3.getPwm());
 
 	write_to_device();
 	delay(50);
@@ -73,7 +81,7 @@ void write_to_device()
 	root["mot1"] = motor1.getPwm();
 	root["m1ls"] = motor1.getCounterClockwisePinState();
 	root["m1rs"] = motor1.getClockwisePinState();
-	root["cu1"] = driver1.getM1CurrentMilliamps();
+	root["cu1"] = driver.getM1CurrentMilliamps();
 	if(model1.isHalted() != 0)
 		root["h1"] = model1.isHalted();
 
@@ -89,6 +97,8 @@ void write_to_device()
 	if(model3.isHalted() != 0)
 		root["h3"] = model3.isHalted();
 
+	root["err1"] = driver.getFaultDriver1();
+	root["err2"] = driver.getFaultDriver2();
 	root.printTo(Serial);
 	Serial.print("\r\n");
 }

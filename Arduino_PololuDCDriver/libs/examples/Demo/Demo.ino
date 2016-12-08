@@ -4,7 +4,7 @@ DualMC33926MotorShield md;
 
 void stopIfFault()
 {
-  if (md.getFault())
+  if (md.getFaultDriver1())
   {
     Serial.println("fault");
     while(1);
