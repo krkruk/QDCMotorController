@@ -6,12 +6,13 @@
 
 
 DualMC33926MotorShield driver(
-		26, A0,
-		28, A1,
-		24, A2,
+		31, A2,
+		28, A0,
+		29, A1,
 
-		30, 31,
-		32, 33);
+		25, 24,
+		23, 22);
+
 MotorData motor1(44, 42);
 MotorModel model1(&motor1);
 
