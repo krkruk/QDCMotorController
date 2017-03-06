@@ -1,4 +1,5 @@
 *.pro.user
+QDCMotorController.pro.user
 
 #in arduino files
 Arduino_PololuDCDriver/.settings

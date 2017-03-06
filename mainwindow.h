@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QList>
 #include <QTimer>
+#include <QKeySequence>
 
 #include "QDCController/qdcwidget.h"
 #include "QDCController/qdcmodel.h"

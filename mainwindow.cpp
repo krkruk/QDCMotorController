@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
     motor2 = new QDCWidget(this);
     motor3 = new QDCWidget(this);
 
+    motor1->setEmergencyShortcutButton(QKeySequence(Qt::Key_1));
+    motor2->setEmergencyShortcutButton(QKeySequence(Qt::Key_2));
+    motor3->setEmergencyShortcutButton(QKeySequence(Qt::Key_3));
+
     model1 = new QDCModel("mot1", "h1", "cu1", motor1, this);
     model2 = new QDCModel("mot2", "h2", "cu2", motor2, this);
     model3 = new QDCModel("mot3", "h3", "cu3", motor3, this);

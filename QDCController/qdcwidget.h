@@ -19,6 +19,7 @@ public:
     int getPwmValue();
     void setGroupLabel(const QString &label);
     void setDefaultView();
+    void setEmergencyShortcutButton(const QKeySequence &shortcut);
 
 signals:
     void emergencyClicked();

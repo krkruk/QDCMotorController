@@ -31,6 +31,12 @@ void QDCWidget::setDefaultView()
     emergencyHalt();
 }
 
+void QDCWidget::setEmergencyShortcutButton(const QKeySequence &shortcut)
+{
+    ui->pushButtonEmergencyStop->setShortcut(shortcut);
+    ui->pushButtonEmergencyStop->setToolTip(tr("Button: ") + shortcut.toString());
+}
+
 void QDCWidget::setLeftLimitSwitchState(bool state)
 {
     auto &style = state ? markStyle : defaultStyle;
@@ -56,7 +62,7 @@ void QDCWidget::setPwmValue(int newValue)
 
 void QDCWidget::setCurrent(int mAmps)
 {
-    ui->labelCurrent->setText(QString("Current: %1mA").arg(mAmps));
+    ui->labelCurrent->setText(QString("Current: %1 mA").arg(mAmps));
 }
 
 void QDCWidget::emergencyHalt()
